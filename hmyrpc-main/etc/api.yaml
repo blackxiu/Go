@@ -1,0 +1,38 @@
+# base
+Name: Harmony-RPC-SPEEDER
+Host: localhost
+Port: 8888
+Timeout: 10000
+
+# Thread
+Threads: 8         # cpu线程数量
+MaxConns: 20000    # 最大连接数（并发）默认10000
+CpuThreshold: 900  # 0 ~ 1000, 默认900
+
+# log
+Log:
+  Mode: console    # 日志输出，console：输出到命令行，file：输出到文件，路径为 Path
+  Encoding: plain   # json：json格式输出，plain：普通文本输出。  两种模式都是按行输出
+  Path: ./logs     # 如果Mode为file，此为输出的文件路径
+  Level: info      # log level：info、error、serve
+
+# cache
+CacheRedis:
+  - Host: 127.0.0.1:6379
+    Type: node      # node / cluster
+    Pass:
+    Weight: 100     # weight
+
+# endpoints
+Endpoints:
+  Type: 1           # 两种负载均衡方式，权重: 1，一致性 hash: 2
+  Nodes:
+    - Name: memo
+      Url: https://hmyapis0.metamemo.one
+      Weight: 90    # 0 ～ 100，默认 90
+    - Name: harmony-Archive
+      Url: https://a.api.s0.t.hmny.io
+      Weight: 0
+    - Name: harmony-non-Archive
+      Url: https://rpc.s0.t.hmny.io
+      Weight: 0
